@@ -39,21 +39,29 @@ document.addEventListener("DOMContentLoaded", async () => {
     function generateHTMLCards() {
         if (!items || items.length === 0) return;
         items.forEach(item => {
-            let gridContainer = document.getElementById('grid-' + item.cat);
+           let gridContainer = document.getElementById('grid-' + item.cat);
 
 if (!gridContainer) {
+    const section = document.createElement('section');
+    section.className = 'menu-category';
+    section.setAttribute('data-section-category', item.cat);
+
+    const title = document.createElement('h2');
+    title.className = 'category-title';
+    title.textContent = item.cat.toUpperCase() + ' Showcase Matrix';
+    title.style.borderLeft = '4px solid ' + getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
+
     gridContainer = document.createElement('div');
+    gridContainer.className = 'menu-grid';
     gridContainer.id = 'grid-' + item.cat;
-    gridContainer.className = 'product-grid';
 
-    const catalogContainer = document.querySelector('.catalog-container');
+    section.appendChild(title);
+    section.appendChild(gridContainer);
 
-    if (catalogContainer) {
-        const section = document.createElement('section');
-        section.className = 'category-section';
-        section.innerHTML = `<h2>${item.cat}</h2>`;
-        section.appendChild(gridContainer);
-        catalogContainer.appendChild(section);
+    const existingSection = document.querySelector('.menu-category');
+
+    if (existingSection) {
+        existingSection.parentNode.appendChild(section);
     }
 }
             const isService = (item.cat === 'services');
